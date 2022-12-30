@@ -1,7 +1,7 @@
-import ConfigSection
+from ConfigSection import ConfigSection
 
 
-class RecoreConfig:
+class Recore:
     recore: ConfigSection
     mcu: ConfigSection
     mcu_ar100: ConfigSection

@@ -17,10 +17,11 @@ class Reconfigure:
         self.board_config = BoardConfig(self)
         self.printer_config = PrinterConfig(self)
         self.stepper_config = StepperConfig(self)
+        self.config = list()
 
     def create_window(self):
         self.window = tk.Tk()
-        self.mainframe = tk.Frame(master=self.window, width=400, height=400, relief=self.border_effects.get("raised"))
+        self.mainframe = tk.Frame(master=self.window, relief=self.border_effects.get("raised"))
         self.mainframe.pack()
 
     def destroy_window(self):
@@ -28,15 +29,15 @@ class Reconfigure:
         self.window.destroy()
 
     def add_config_section(self, config_section):
+        # print("adding section " + config_section.get_name())
         self.config.append(config_section)
 
 
 main = Reconfigure()
 main.board_config.board_selection_gui(main)
 
-print("Board: ", main.board_config.get_board())
-print("Printer: ", main.printer_config.get_printer_config())
-print("Steppers: ", main.stepper_config.get_stepper_config())
-print("Stepper_options: ", main.stepper_config.get_stepper_options())
-
+print("Config generated: ")
+for section in main.config:
+    print(section.get_output())
+    print("\n\n")
 # main.window.quit()

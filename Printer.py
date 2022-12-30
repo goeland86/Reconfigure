@@ -1,7 +1,7 @@
 from typing import Dict, Any
 import tkinter as tk
-import ConfigSection
-import Recore
+from ConfigSection import ConfigSection
+from Recore import Recore
 
 
 class PrinterConfig:
@@ -63,12 +63,13 @@ class PrinterConfig:
         self.printer.add_setting("square_corner_velocity", scv)
         print("Printer: ", self.printer.get_output())
         recore = Recore(self.board)
-        self.parent.config.append(recore.get_recore_config())
-        self.parent.config.append(recore.get_mcu_config())
-        self.parent.config.append(recore.get_mcu_ar100_config())
-        self.parent.config.append(self.printer)
+        self.parent.add_config_section(recore.get_recore_config())
+        self.parent.add_config_section(recore.get_mcu_config())
+        self.parent.add_config_section(recore.get_mcu_ar100_config())
+        self.parent.add_config_section(self.printer)
         self.parent.destroy_window()
-        self.parent.stepper_config.create_stepper_section(self.parent, self.board)
+        self.parent.stepper_config.create_stepper_section(self.parent, self.board.get())
+
 
     def return_to_board_selection_gui(self, parent):
         parent.destroy_window()
