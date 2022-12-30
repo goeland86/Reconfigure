@@ -11,3 +11,10 @@ will not replace the Recore's [thorough Wiki documentation](https://wiki.iagent.
 At the moment this python script is entirely experimental, and any and all usage of this software should be considered risky.
 Use of the configuration output may fail to function or even break your hardware depending on how you wired it up.
 We take no responsibility for any damage incurred from non-released versions of the software.
+
+## Requirements
+
+At this stage, to be able to run, you need to have Python3 and the python3-tk library installed.
+On Ubuntu you can either use `sudo apt install python3-tk` or `pip3 install tk`.
+
+Then you can run the program with `python reconfigure.py`

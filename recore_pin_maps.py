@@ -19,6 +19,8 @@ class RecoreA5PinMaps:
                                 "S4": "ar100:PD0", "S5": "ar100:PD0",
                                 "S6": "ar100:PD1", "S7": "ar100:PD1"}
 
+        self.a5_uart_address = {"S0": "0", "S1": "1", "S2": "2", "S3": "3", "S4": "0", "S5": "1", "S6": "2", "S7": "3"}
+
         # create a map of mosfet control pins
         self.a5_heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "Bed": "PA11"}
 
@@ -64,6 +66,7 @@ class RecoreA6PinMaps:
         self.a6_uart_pin_map = {"S0": "ar100:PB1", "S1": "ar100:PB1", "S2": "ar100:PB1", "S3": "ar100:PB1",
                                 "S4": "ar100:PD0", "S5": "ar100:PD0",
                                 "S6": "ar100:PD1", "S7": "ar100:PD1"}
+        self.a5_uart_address = {"S0": "0", "S1": "1", "S2": "2", "S3": "3", "S4": "0", "S5": "1", "S6": "2", "S7": "3"}
 
         # create a map of mosfet control pins
         self.a6_heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "Bed": "PA11"}
