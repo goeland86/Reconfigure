@@ -18,3 +18,8 @@ At this stage, to be able to run, you need to have Python3 and the python3-tk li
 On Ubuntu you can either use `sudo apt install python3-tk` or `pip3 install tk`.
 
 Then you can run the program with `python reconfigure.py`
+
+### Windows users
+
+Please note that on Windows, to be able to run the script, you need to either launch it from the Python console, or 
+from the Powershell. Running it from the DOS (cmd) terminal won't work.
