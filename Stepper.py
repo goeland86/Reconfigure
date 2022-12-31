@@ -109,9 +109,41 @@ class StepperConfig:
         endstop_selection = tk.OptionMenu(parent.mainframe, endstop, *endstop_options)
         endstop_selection.pack()
 
-        stepper_parameters = dict()
-        driver_parameters = dict()
-        driver_parameters[RUN_CURRENT] = stepper_current_entry.get()
+        rotation_distance_label = tk.Label(master=parent.mainframe, text="rotation distance")
+        rotation_distance_label.pack()
+        rotation_distance = "40"
+        rotation_distance_entry = tk.Entry(master=parent.mainframe, fg="black", bg="white",
+                                           textvariable=rotation_distance)
+        rotation_distance_entry.insert(0, rotation_distance)
+        rotation_distance_entry.pack()
+
+        microstep_options = ["1", "2", "4", "8", "16", "32", "64", "128", "256"]
+        microstep_label = tk.Label(master=parent.mainframe, text="microstep setting")
+        microstep_label.pack()
+        microstep = tk.StringVar(parent.mainframe)
+        microstep_selection = tk.OptionMenu(parent.mainframe, microstep, *microstep_options)
+        microstep_selection.pack()
+
+        position_max_label = tk.Label(master=parent.mainframe, text="Maximum position (in mm)")
+        position_max_label.pack()
+        position_max = "200"
+        position_max_entry = tk.Entry(master=parent.mainframe, fg="black", bg="white", textvariable=position_max)
+        position_max_entry.insert(0, position_max)
+        position_max_entry.pack()
+
+        homing_speed_label = tk.Label(master=parent.mainframe, text="homing speed")
+        homing_speed_label.pack()
+        homing_speed = "100"
+        homing_speed_entry = tk.Entry(master=parent.mainframe, textvariable=homing_speed)
+        homing_speed_entry.insert(0, homing_speed)
+        homing_speed_entry.pack()
+
+        stealthchop_threshold_label = tk.Label(master=parent.mainframe, text="stealthchop threshold")
+        stealthchop_threshold_label.pack()
+        stealthchop_threshold = "99999"
+        stealthchop_threshold_entry = tk.Entry(master=parent.mainframe, textvariable=stealthchop_threshold)
+        stealthchop_threshold_entry.insert(0, stealthchop_threshold)
+        stealthchop_threshold_entry.pack()
 
         add_another = tk.IntVar(master=parent.mainframe)
         add_another_box = tk.Checkbutton(master=parent.mainframe, text="add another stepper", variable=add_another)
@@ -119,32 +151,39 @@ class StepperConfig:
 
         stepper_confirm_button = tk.Button(master=parent.mainframe, relief=parent.border_effects.get("groove"),
                                            text="OK", width=5, height=5, bg="black", fg="white")
-        stepper_confirm_button['command'] = lambda: self.set_stepper(stepper_selected.get(), stepper_connector.get(),
-                                                                     endstop.get(), stepper_parameters,
-                                                                     driver_parameters, bool(add_another.get()))
+        stepper_confirm_button['command'] = lambda: self.set_stepper(stepper_label=stepper_selected.get(),
+                                                                     stepper_connector=stepper_connector.get(),
+                                                                     endstop_connector=endstop.get(),
+                                                                     rotation_distance=rotation_distance_entry.get(),
+                                                                     microstep=microstep.get(),
+                                                                     position_max=position_max_entry.get(),
+                                                                     run_current=stepper_current_entry.get(),
+                                                                     homing_speed=homing_speed_entry.get(),
+                                                                     stealthchop_threshold=stealthchop_threshold_entry.get(),
+                                                                     another=bool(add_another.get()))
         stepper_confirm_button.pack()
         parent.mainframe.pack()
         parent.window.mainloop()
 
-    def set_stepper(self, stepper_label, stepper_connector, endstop_connector, stepper_settings, driver_options,
-                    another):
+    def set_stepper(self, stepper_label, stepper_connector, endstop_connector, rotation_distance, microstep,
+                    position_max, run_current, homing_speed, stealthchop_threshold, another):
         self.stepper_definition = ConfigSection(stepper_label)
         driver_label = "tmc2209 " + stepper_label
         self.driver_options = ConfigSection(driver_label)
         self.stepper_definition.add_setting("step_pin", self.pin_map.step_pin_map.get(stepper_connector))
         self.stepper_definition.add_setting("step_dir", self.pin_map.dir_pin_map.get(stepper_connector))
         self.stepper_definition.add_setting("endstop_pin", self.pin_map.endstop_pin_map.get(endstop_connector))
-        self.stepper_definition.add_setting("%s" % ROTATION_DISTANCE, stepper_settings.get(ROTATION_DISTANCE))
-        self.stepper_definition.add_setting("%s" % MICROSTEPS, stepper_settings.get(MICROSTEPS))
-        self.stepper_definition.add_setting("%s" % ENDSTOP, stepper_settings.get(ENDSTOP))
-        self.stepper_definition.add_setting("%s" % POSITION_MAX, stepper_settings.get(POSITION_MAX))
-        self.stepper_definition.add_setting("%s" % HOMING_SPEED, stepper_settings.get(HOMING_SPEED))
+        self.stepper_definition.add_setting("%s" % ROTATION_DISTANCE, rotation_distance)
+        self.stepper_definition.add_setting("%s" % MICROSTEPS, microstep)
+        self.stepper_definition.add_setting("%s" % ENDSTOP, endstop_connector)
+        self.stepper_definition.add_setting("%s" % POSITION_MAX, position_max)
+        self.stepper_definition.add_setting("%s" % HOMING_SPEED, homing_speed)
 
         self.driver_options.add_setting("uart_pin", self.pin_map.uart_pin_map.get(stepper_connector))
         self.driver_options.add_setting("uart_address", self.pin_map.uart_address.get(stepper_connector))
         self.driver_options.add_setting("tx_pin", self.pin_map.tx_pin_map.get(stepper_connector))
-        self.driver_options.add_setting("%s" % RUN_CURRENT, driver_options.get(RUN_CURRENT))
-        self.driver_options.add_setting("%s" % STEALTHCHOP_THRESHOLD, driver_options.get(STEALTHCHOP_THRESHOLD))
+        self.driver_options.add_setting("%s" % RUN_CURRENT, run_current)
+        self.driver_options.add_setting("%s" % STEALTHCHOP_THRESHOLD, stealthchop_threshold)
 
         self.parent.add_config_section(self.driver_options)
         self.parent.add_config_section(self.stepper_definition)
