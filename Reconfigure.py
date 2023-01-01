@@ -2,6 +2,7 @@ import tkinter as tk
 from Printer import PrinterConfig
 from Board import BoardConfig
 from Stepper import StepperConfig
+from Extruder import ExtruderConfig
 import ConfigSection
 
 
@@ -15,8 +16,7 @@ class Reconfigure:
         self.mainframe = None
         self.window = None
         self.board_config = BoardConfig(self)
-        self.printer_config = PrinterConfig(self)
-        self.stepper_config = StepperConfig(self)
+        self.pin_map = None
         self.config = list()
 
     def create_window(self):
@@ -32,6 +32,17 @@ class Reconfigure:
         # print("adding section " + config_section.get_name())
         self.config.append(config_section)
 
+    def set_pin_map(self, pin_map):
+        self.pin_map = pin_map
+
+    def init_printer(self):
+        self.printer_config = PrinterConfig(self)
+
+    def init_stepper(self):
+        self.stepper_config = StepperConfig(self)
+
+    def init_extruder(self):
+        self.extruder_config = ExtruderConfig(self)
 
 main = Reconfigure()
 main.board_config.board_selection_gui(main)

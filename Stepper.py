@@ -1,6 +1,5 @@
 import tkinter as tk
 from ConfigSection import ConfigSection
-from Recore_pin_maps import *
 
 RUN_CURRENT = "run_current"
 
@@ -48,12 +47,10 @@ def get_stepper_possible_entries(parent):
 
 
 class StepperConfig:
-    _stepper_type = "stepper"
-    _driver_type = "driver"
     stepper_definition: ConfigSection
     driver_options: ConfigSection
 
-    def __init__(self, parent, ):
+    def __init__(self, parent):
         self.pin_map = None
         self.parent = parent
 
@@ -61,14 +58,8 @@ class StepperConfig:
         parent.window.destroy()
         parent.create_printer_section()
 
-    def create_stepper_section(self, parent, board):
-        self.board = board
-        if board == "Recore A5":
-            self.pin_map = RecoreA5PinMaps()
-        elif board == "Recore A6":
-            self.pin_map = RecoreA6PinMaps()
-        elif board == "Recore A7":
-            self.pin_map = RecoreA7PinMaps()
+    def create_stepper_section(self, parent):
+        self.pin_map = parent.pin_map
 
         parent.create_window()
         return_button = tk.Button(master=parent.mainframe, relief=parent.border_effects.get("groove"), text="Back",
@@ -89,7 +80,7 @@ class StepperConfig:
         stepper_connector_label.pack()
 
         stepper_connector = tk.StringVar(parent.mainframe)
-        stepper_connector_options = ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+        stepper_connector_options = self.pin_map.step_pin_map.keys()
         stepper_connector_selection = tk.OptionMenu(parent.mainframe, stepper_connector, *stepper_connector_options)
         stepper_connector_selection.pack()
 
@@ -105,7 +96,7 @@ class StepperConfig:
         endstop_label.pack()
 
         endstop = tk.StringVar(parent.mainframe)
-        endstop_options = ["ES0", "ES1", "ES2", "ES3", "ES4", "ES5", "ES6"]
+        endstop_options = self.pin_map.endstop_pin_map.keys()
         endstop_selection = tk.OptionMenu(parent.mainframe, endstop, *endstop_options)
         endstop_selection.pack()
 
@@ -188,11 +179,18 @@ class StepperConfig:
         self.parent.add_config_section(self.driver_options)
         self.parent.add_config_section(self.stepper_definition)
 
+        self.pin_map.step_pin_map.pop(stepper_connector, None)
+        self.pin_map.dir_pin_map.pop(stepper_connector, None)
+        self.pin_map.endstop_pin_map.pop(endstop_connector, None)
+        self.pin_map.uart_address.pop(stepper_connector, None)
+        self.pin_map.tx_pin_map.pop(stepper_connector, None)
+
         self.parent.window.destroy()
         if another:
-            self.create_stepper_section(self.parent, self.board)
+            self.create_stepper_section(self.parent)
         else:
-            print("End of the wizard for now.")
+            self.parent.init_extruder()
+            self.parent.extruder_config.create_extruder_section(self.parent)
 
     def get_stepper_config(self):
         return self.stepper_definition

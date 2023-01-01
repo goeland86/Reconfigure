@@ -1,5 +1,7 @@
 from typing import Dict, Any
 import tkinter as tk
+
+import Recore_pin_maps
 from ConfigSection import ConfigSection
 from Recore import Recore
 
@@ -13,7 +15,8 @@ class PrinterConfig:
 
     def create_printer_section(self, parent, board):
         self.board = board
-        self.parent.create_window()
+
+        parent.create_window()
         return_button = tk.Button(master=parent.mainframe, relief=parent.border_effects.get("groove"),
                                   text="Back",
                                   width=5, height=5, bg="black", fg="white")
@@ -61,14 +64,20 @@ class PrinterConfig:
         self.printer.add_setting("max_velocity", max_vel)
         self.printer.add_setting("max_accel", max_accel)
         self.printer.add_setting("square_corner_velocity", scv)
-        print("Printer: ", self.printer.get_output())
         recore = Recore(self.board)
         self.parent.add_config_section(recore.get_recore_config())
         self.parent.add_config_section(recore.get_mcu_config())
         self.parent.add_config_section(recore.get_mcu_ar100_config())
         self.parent.add_config_section(self.printer)
+        if self.board.get() == "Recore A5":
+            self.parent.set_pin_map(Recore_pin_maps.RecoreA5PinMaps())
+        elif self.board.get() == "Recore A6":
+            self.parent.set_pin_map(Recore_pin_maps.RecoreA6PinMaps())
+        elif self.board.get() == "Recore A7":
+            self.parent.set_pin_map(Recore_pin_maps.RecoreA7PinMaps())
         self.parent.destroy_window()
-        self.parent.stepper_config.create_stepper_section(self.parent, self.board.get())
+        self.parent.init_stepper()
+        self.parent.stepper_config.create_stepper_section(self.parent)
 
 
     def return_to_board_selection_gui(self, parent):

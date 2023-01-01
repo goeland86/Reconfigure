@@ -22,7 +22,7 @@ class RecoreA5PinMaps:
         self.uart_address = {"S0": "0", "S1": "1", "S2": "2", "S3": "3", "S4": "0", "S5": "1", "S6": "2", "S7": "3"}
 
         # create a map of mosfet control pins
-        self.heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "Bed": "PA11"}
+        self.heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "BED": "PA11"}
 
         # create a map of the temperature sensor pins
         self.temp_sensor_pin_map = {"T0": "PA0", "T1": "PA1", "T2": "PA2", "T3": "PA3"}
@@ -72,7 +72,7 @@ class RecoreA6PinMaps:
         self.uart_address = {"S0": "0", "S1": "1", "S2": "2", "S3": "3", "S4": "0", "S5": "1", "S6": "2", "S7": "3"}
 
         # create a map of mosfet control pins
-        self.heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "Bed": "PA11"}
+        self.heater_pin_map = {"H0": "PA8", "H1": "PA9", "H2": "PA10", "BED": "PA11"}
 
         # create a map of the temperature sensor pins
         self.temp_sensor_pin_map = {"T0": "PA0", "T1": "PA1", "T2": "PA2", "T3": "PA3"}

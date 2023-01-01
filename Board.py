@@ -27,6 +27,7 @@ class BoardConfig:
         print("board selected:", self.board_selected)
         parent.destroy_window()
         # call the PrinterConfig settings
+        parent.init_printer()
         parent.printer_config.create_printer_section(parent, board)
 
     def get_board(self):
