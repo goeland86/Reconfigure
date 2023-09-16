@@ -13,10 +13,13 @@ class Recore:
         match board:
             case "Recore A7":
                 self.recore.add_setting("revision", "A7")
+                self.mcu.add_setting("serial", "/dev/ttyS2")
             case "Recore A6":
                 self.recore.add_setting("revision", "A6")
+                self.mcu.add_setting("serial", "/dev/ttyS2")
             case "Recore A5":
                 self.recore.add_setting("revision", "A5")
+                self.mcu.add_setting("serial", "/dev/ttyS4")
 
         self.recore.add_setting("gain_t0", 1)
         self.recore.add_setting("gain_t1", 1)
@@ -32,7 +35,7 @@ class Recore:
             self.recore.add_setting("offset_t2", 0)
             self.recore.add_setting("offset_t3", 0)
 
-        self.mcu.add_setting("serial", "/dev/ttyS4")
+        self.mcu.add_setting("serial", "/dev/ttyS2")
         self.mcu.add_setting("baud", 250000)
         self.mcu.add_setting("restart_method", "command")
 
