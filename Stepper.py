@@ -172,7 +172,8 @@ class StepperConfig:
 
         self.driver_options.add_setting("uart_pin", self.pin_map.uart_pin_map.get(stepper_connector))
         self.driver_options.add_setting("uart_address", self.pin_map.uart_address.get(stepper_connector))
-        self.driver_options.add_setting("tx_pin", self.pin_map.tx_pin_map.get(stepper_connector))
+        if len(self.pin_map.tx_pin_map) > 0:
+            self.driver_options.add_setting("tx_pin", self.pin_map.tx_pin_map.get(stepper_connector))
         self.driver_options.add_setting("%s" % RUN_CURRENT, run_current)
         self.driver_options.add_setting("%s" % STEALTHCHOP_THRESHOLD, stealthchop_threshold)
 
@@ -183,7 +184,8 @@ class StepperConfig:
         self.pin_map.dir_pin_map.pop(stepper_connector, None)
         self.pin_map.endstop_pin_map.pop(endstop_connector, None)
         self.pin_map.uart_address.pop(stepper_connector, None)
-        self.pin_map.tx_pin_map.pop(stepper_connector, None)
+        if len(self.pin_map.tx_pin_map) > 0:
+            self.pin_map.tx_pin_map.pop(stepper_connector, None)
 
         self.parent.window.destroy()
         if another:
